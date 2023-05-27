@@ -1,26 +1,36 @@
 const newQuoteButton = document.querySelector('#js-new-quote');
 const twitterButton = document.querySelector('#js-tweet');
+const spinner = document.querySelector('#js-spinner');
 
 newQuoteButton.addEventListener('click', getQuote)
  
 const endpoint = 'https://api.whatdoestrumpthink.com/api/v1/quotes/random'
 
 async function getQuote(){
-  console.log("quote button was clicked")
+  
+   
+  spinner.classList.remove('hidden');
+  newQuoteButton.disabled = true;
   try{
     const response = await fetch(endpoint)
     if(!response.ok){
       throw Error(response.statusText)
     }
-    const json = await response.json()
-    displayQuote(json.message)
-    setTweetButton(json.message)
+    const json = await response.json();
+    displayQuote(json.message);
+    setTweetButton(json.message);
 
   }
 
-  catch(err){
-    console.log(err)
-    alert('Failed to fetch new quote')
+  catch{
+    
+    alert('Failed to fetch new quote');
+  } 
+
+  finally {
+    newQuoteButton.disabled=false;
+    spinner.classList.add('hidden');
+
   }
 }
 
